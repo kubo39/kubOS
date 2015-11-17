@@ -1,0 +1,9 @@
+{
+    "name": "kubOS",
+    "authors": [
+        "kubo39"
+    ],
+    "targetType": "staticLibrary",
+    "targetPath": "target/x86_64-unknown-linux-gnu/debug/",
+    "targetName": "blog_os"
+}
