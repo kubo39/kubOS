@@ -6,6 +6,8 @@ https://github.com/phil-opp/blog_os
 
 ## prerequirements
 
+* qemu -- for running OS on qemu.
+
 * nasm -- for compiling assembly sources.
 
 * dmd -- for compiling D sources.
