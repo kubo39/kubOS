@@ -2,9 +2,9 @@
 
 extern(C):
 
-void d_main() @nogc nothrow
+int d_main() @nogc nothrow
 {
-  auto hello = cast(ubyte[])"Hello, World!";
+  char[13] hello = ['H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', '!'];
   ubyte colorByte = 0x1f;  // white foreground, blue background
   ubyte[24] helloColored = [
     colorByte, colorByte, colorByte, colorByte, colorByte, colorByte,
@@ -14,7 +14,7 @@ void d_main() @nogc nothrow
   for (int i; i < hello.length; ++i) {
     helloColored[i*2] = hello[i];
   }
-  ubyte* bufferPtr = cast(ubyte*)(0xb8000 + 1988);
-  bufferPtr = helloColored.ptr;
+  ulong* bufferPtr = cast(ulong*)(0xb8000 + 1988);
+  *bufferPtr = cast(ulong)(helloColored.ptr);
   for(;;){}
 }
