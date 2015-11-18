@@ -13,3 +13,5 @@ https://github.com/phil-opp/blog_os
 * dub -- for building D language project.
 
 * xorriso -- for create ISO image.
+
+* grub-pc-bin -- (optional.) because of Linux on EFI
