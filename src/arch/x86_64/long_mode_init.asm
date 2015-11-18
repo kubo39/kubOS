@@ -19,11 +19,10 @@ section .text
 bits 64
 long_mode_start:
     call setup_SSE
-
-    ; call rust main (with multiboot pointer in rdi)
+    ; call d main (with multiboot pointer in rdi)
     call d_main
 .os_returned:
-    ; rust main returned, print `OS returned!`
+    ; d main returned, print `OS returned!`
     mov rax, 0x4f724f204f534f4f
     mov [0xb8000], rax
     mov rax, 0x4f724f754f744f65
