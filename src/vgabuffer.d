@@ -55,6 +55,12 @@ struct Writer
 
   void write(ubyte b) nothrow @nogc
   {
+    if (b == '\n'.to!ubyte) {
+      newline;
+    }
+    if (columnPos >= BUFFER_WIDTH) {
+      newline;
+    }
     auto row = BUFFER_HEIGHT - 1;
     auto col = columnPos;
     buffer.chars[row][col] = ScreenChar(b, colorCode);
@@ -79,11 +85,30 @@ struct Writer
       write(c);
     }
   }
+
+  void newline() nothrow @nogc
+  {
+    foreach (row; 0..BUFFER_HEIGHT-1) {
+      buffer.chars[row] = buffer.chars[row+1];
+    }
+    clearRow(BUFFER_HEIGHT-1);
+    columnPos = 0;
+  }
+
+  void clearRow(int row) nothrow @nogc
+  {
+    auto blank = ScreenChar(' '.to!ubyte, colorCode);
+    ScreenChar[BUFFER_WIDTH] arr = void;  // avoid calling memset().
+    for (int i; i < BUFFER_HEIGHT; ++i) {
+      arr[i] = ScreenChar(' '.to!ubyte, colorCode);
+    }
+    buffer.chars[row] = arr;
+  }
 }
 
 void printHello() nothrow @nogc
 {
-  string hello = "Hello, World!";
+  string hello = "Hello, World!\n";
   auto writer = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
   writer.write(hello);
 }
