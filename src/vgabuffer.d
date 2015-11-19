@@ -72,11 +72,18 @@ struct Writer
       write(c);
     }
   }
+
+  void write(string str) nothrow @nogc
+  {
+    foreach (c; str) {
+      write(c);
+    }
+  }
 }
 
 void printHello() nothrow @nogc
 {
-  const char[13] hello = ['H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', '!'];
+  string hello = "Hello, World!";
   auto writer = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
   writer.write(hello);
 }
