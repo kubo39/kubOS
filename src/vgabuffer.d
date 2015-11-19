@@ -1,5 +1,7 @@
 module vgabuffer;
 
+import std.conv : to;
+
 @system:
 
 extern(C):
@@ -51,23 +53,30 @@ struct Writer
     buffer = _buffer;
   }
 
-  auto write(ubyte b) nothrow @nogc
+  void write(ubyte b) nothrow @nogc
   {
-    if (columnPos >= BUFFER_WIDTH) {
-    }
     auto row = BUFFER_HEIGHT - 1;
     auto col = columnPos;
     buffer.chars[row][col] = ScreenChar(b, colorCode);
     ++columnPos;
   }
+
+  void write(char c) nothrow @nogc
+  {
+    write(c.to!ubyte);
+  }
+
+  void write(const char[] chars) nothrow @nogc
+  {
+    foreach (c; chars) {
+      write(c);
+    }
+  }
 }
 
 void printHello() nothrow @nogc
 {
-  char[13] hello = ['H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', '!'];
+  const char[13] hello = ['H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', '!'];
   auto writer = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
-
-  foreach (c; hello) {
-    writer.write(c);
-  }
+  writer.write(hello);
 }
