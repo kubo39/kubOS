@@ -4,7 +4,7 @@ import std.range;
 
 extern(C):
 
-int d_main() @nogc nothrow
+void d_main() @nogc nothrow
 {
   char[13] hello = ['H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', '!'];
   ubyte colorByte = 0x1f;  // white foreground, blue background
