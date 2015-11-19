@@ -1,3 +1,5 @@
+import std.range;
+
 @system:
 
 extern(C):
@@ -11,9 +13,11 @@ int d_main() @nogc nothrow
     colorByte, colorByte, colorByte, colorByte, colorByte, colorByte,
     colorByte, colorByte, colorByte, colorByte, colorByte, colorByte,
     colorByte, colorByte, colorByte, colorByte, colorByte, colorByte];
-  for (int i; i < hello.length; ++i) {
-    helloColored[i*2] = hello[i];
+
+  foreach (i, c; hello) {
+    helloColored[i*2] = c;
   }
+
   ulong* bufferPtr = cast(ulong*)(0xb8000 + 1988);
   *bufferPtr = cast(ulong)(helloColored.ptr);
   for(;;){}
