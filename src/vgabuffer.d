@@ -51,6 +51,7 @@ struct Writer
     buffer = _buffer;
   }
 
+  // Writes its argument to the VGA buffer.
   void write(ubyte b) nothrow @nogc
   {
     if (b == '\n'.to!ubyte) {
@@ -65,11 +66,13 @@ struct Writer
     ++columnPos;
   }
 
+  // ditto.
   void write(char c) nothrow @nogc
   {
     write(c.to!ubyte);
   }
 
+  // ditto.
   void write(const char[] chars) nothrow @nogc
   {
     foreach (c; chars) {
@@ -77,6 +80,7 @@ struct Writer
     }
   }
 
+  // ditto.
   void write(string str) nothrow @nogc
   {
     foreach (c; str) {
@@ -84,6 +88,7 @@ struct Writer
     }
   }
 
+  // Writes its arguments to the VGA buffer.
   void write(S...)(S args) nothrow @nogc
   {
     foreach (arg; args) {
@@ -94,6 +99,7 @@ struct Writer
     }
   }
 
+  // Writes its arguments to the VGA buffer, followed by a newline.
   void writeln(S...)(S args) nothrow @nogc
   {
     write(args, '\n');
@@ -118,6 +124,7 @@ struct Writer
     buffer.chars[row] = arr;
   }
 }
+
 
 void printHello() nothrow @nogc
 {
