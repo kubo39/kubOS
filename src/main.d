@@ -6,6 +6,7 @@ extern(C):
 
 void d_main() @nogc nothrow
 {
-  printHello();
+  clearScreen;
+  WRITER.writeln("Hello, World!");
   for(;;){}
 }

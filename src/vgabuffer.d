@@ -2,6 +2,7 @@ module vgabuffer;
 
 import std.conv : to;
 
+
 @system:
 
 immutable BUFFER_HEIGHT = 25;
@@ -56,6 +57,7 @@ struct Writer
   {
     if (c == '\n') {
       newline;
+      return;
     }
     if (columnPos >= BUFFER_WIDTH) {
       newline;
@@ -110,10 +112,10 @@ struct Writer
 
   void clearRow(int row) nothrow @nogc
   {
-    auto blank = ScreenChar(' '.to!ubyte, colorCode);
+    auto blank = ScreenChar(' ', colorCode);
     ScreenChar[BUFFER_WIDTH] arr = void;  // avoid calling memset().
-    for (int i; i < BUFFER_HEIGHT; ++i) {
-      arr[i] = ScreenChar(' '.to!ubyte, colorCode);
+    for (int i; i <= BUFFER_WIDTH; ++i) {
+      arr[i] = blank;
     }
     buffer.chars[row] = arr;
   }
@@ -125,4 +127,15 @@ void printHello() nothrow @nogc
   string hello = "Hello, World!";
   auto writer = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
   writer.writeln(hello);
+}
+
+
+__gshared static Writer WRITER = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
+
+
+void clearScreen() nothrow @nogc
+{
+  foreach(_; 0..BUFFER_HEIGHT) {
+    WRITER.writeln("");
+  }
 }
