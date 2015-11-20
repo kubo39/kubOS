@@ -47,7 +47,7 @@ $(kernel): dub $(assembly_object_files) $(linker_script)
 	@ld -n --gc-sections -T $(linker_script) -o $(kernel) $(assembly_object_files) $(dlang_os)
 
 dub:
-	@dub build --build=release
+	@dub build
 
 # compile assembly files
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
