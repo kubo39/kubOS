@@ -29,7 +29,7 @@ enum Color : ubyte
 
 struct ScreenChar
 {
-  ubyte asciiChar;
+  char asciiChar;
   Color colorCode;
 }
 
@@ -52,9 +52,9 @@ struct Writer
   }
 
   // Writes its argument to the VGA buffer.
-  void write(ubyte b) nothrow @nogc
+  void write(char c) nothrow @nogc
   {
-    if (b == '\n'.to!ubyte) {
+    if (c == '\n') {
       newline;
     }
     if (columnPos >= BUFFER_WIDTH) {
@@ -62,14 +62,8 @@ struct Writer
     }
     auto row = BUFFER_HEIGHT - 1;
     auto col = columnPos;
-    buffer.chars[row][col] = ScreenChar(b, colorCode);
+    buffer.chars[row][col] = ScreenChar(c, colorCode);
     ++columnPos;
-  }
-
-  // ditto.
-  void write(char c) nothrow @nogc
-  {
-    write(c.to!ubyte);
   }
 
   // ditto.
