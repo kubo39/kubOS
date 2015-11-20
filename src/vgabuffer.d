@@ -4,8 +4,6 @@ import std.conv : to;
 
 @system:
 
-extern(C):
-
 immutable BUFFER_HEIGHT = 25;
 immutable BUFFER_WIDTH  = 80;
 
