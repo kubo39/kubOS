@@ -84,6 +84,21 @@ struct Writer
     }
   }
 
+  void write(S...)(S args) nothrow @nogc
+  {
+    foreach (arg; args) {
+      alias A = typeof(arg);
+      static if (is(A == string) || is(A == char) || is(A == ubyte)) {
+        write(arg);
+      }
+    }
+  }
+
+  void writeln(S...)(S args) nothrow @nogc
+  {
+    write(args, '\n');
+  }
+
   void newline() nothrow @nogc
   {
     foreach (row; 0..BUFFER_HEIGHT-1) {
@@ -106,7 +121,7 @@ struct Writer
 
 void printHello() nothrow @nogc
 {
-  string hello = "Hello, World!\n";
+  string hello = "Hello, World!";
   auto writer = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
-  writer.write(hello);
+  writer.writeln(hello);
 }
