@@ -114,7 +114,7 @@ struct Writer
   {
     auto blank = ScreenChar(' ', colorCode);
     ScreenChar[BUFFER_WIDTH] arr = void;  // avoid calling memset().
-    for (int i; i <= BUFFER_WIDTH; ++i) {
+    for (int i; i < BUFFER_WIDTH; ++i) {
       arr[i] = blank;
     }
     buffer.chars[row] = arr;
