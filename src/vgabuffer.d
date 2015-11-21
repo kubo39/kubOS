@@ -30,7 +30,7 @@ enum Color : ubyte
 
 struct ScreenChar
 {
-  char asciiChar;
+  ubyte asciiChar;
   Color colorCode;
 }
 
@@ -53,9 +53,9 @@ struct Writer
   }
 
   // Writes its argument to the VGA buffer.
-  void write(char c) nothrow @nogc
+  void write(ubyte b) nothrow @nogc
   {
-    if (c == '\n') {
+    if (b == '\n'.to!ubyte) {
       newline;
       return;
     }
@@ -64,22 +64,14 @@ struct Writer
     }
     auto row = BUFFER_HEIGHT - 1;
     auto col = columnPos;
-    buffer.chars[row][col] = ScreenChar(c, colorCode);
+    buffer.chars[row][col] = ScreenChar(b, colorCode);
     ++columnPos;
-  }
-
-  // ditto.
-  void write(const char[] chars) nothrow @nogc
-  {
-    foreach (c; chars) {
-      write(c);
-    }
   }
 
   // ditto.
   void write(string str) nothrow @nogc
   {
-    foreach (c; str) {
+    foreach (c; cast(ubyte[])str) {
       write(c);
     }
   }
@@ -88,10 +80,7 @@ struct Writer
   void write(S...)(S args) nothrow @nogc
   {
     foreach (arg; args) {
-      alias A = typeof(arg);
-      static if (is(A == string) || is(A == char) || is(A == ubyte)) {
-        write(arg);
-      }
+      write(arg);
     }
   }
 
@@ -112,7 +101,7 @@ struct Writer
 
   void clearRow(int row) nothrow @nogc
   {
-    auto blank = ScreenChar(' ', colorCode);
+    auto blank = ScreenChar(' '.to!ubyte, colorCode);
     ScreenChar[BUFFER_WIDTH] arr = void;  // avoid calling memset().
     for (int i; i < BUFFER_WIDTH; ++i) {
       arr[i] = blank;
