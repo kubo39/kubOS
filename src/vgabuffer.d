@@ -111,14 +111,6 @@ struct Writer
 }
 
 
-void printHello() nothrow @nogc
-{
-  string hello = "Hello, World!";
-  auto writer = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
-  writer.writeln(hello);
-}
-
-
 __gshared static Writer WRITER = Writer(0, Color.LightGreen, Color.Black, cast(Buffer*)0xb8000);
 
 
