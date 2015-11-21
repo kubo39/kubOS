@@ -1,5 +1,7 @@
 module vgabuffer;
 
+import util;
+
 import std.conv : to;
 
 
@@ -73,6 +75,16 @@ struct Writer
   {
     foreach (c; cast(ubyte[])str) {
       write(c);
+    }
+  }
+
+  // ditto.
+  void write(int num) nothrow @nogc
+  {
+    ubyte[int.sizeof * 8] buf = void;
+		auto start = itoa(num, buf.ptr, buf.length, 10);
+		for (size_t i = start; i < buf.length; ++i) {
+			write(buf[i]);
     }
   }
 
