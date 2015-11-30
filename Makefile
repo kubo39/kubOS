@@ -17,7 +17,7 @@ target ?= $(arch)-unknown-linux-gnu
 kernel := build/kernel-$(arch).bin
 iso := build/os-$(arch).iso
 
-dlang_os := target/$(target)/debug/libblog_os.a
+dlang_os := target/$(target)/debug/libkubos.a
 linker_script := src/arch/$(arch)/linker.ld
 grub_cfg := src/arch/$(arch)/grub.cfg
 assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
