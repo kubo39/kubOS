@@ -114,7 +114,7 @@ struct Writer
   void clearRow(int row) nothrow @nogc
   {
     auto blank = ScreenChar(' '.to!ubyte, colorCode);
-    ScreenChar[BUFFER_WIDTH] arr = void;  // avoid calling memset().
+    ScreenChar[BUFFER_WIDTH] arr;
     for (int i; i < BUFFER_WIDTH; ++i) {
       arr[i] = blank;
     }
