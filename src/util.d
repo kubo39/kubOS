@@ -7,18 +7,19 @@ size_t itoa(int value, ubyte* buf, size_t len, uint base = 10) nothrow @nogc
   size_t pos = len;
   bool sign = false;
 
-  if (value < 0) {
+  if (value < 0)
+  {
     sign = true;
     value = -value;
   }
 
-  do {
+  do
+  {
     buf[--pos] = BASE_CHARS[value % base];
   } while (value /= base);
 
-  if (sign) {
+  if (sign)
     buf[--pos] = '-';
-  }
 
   return pos;
 }
