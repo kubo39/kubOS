@@ -78,10 +78,19 @@ struct Writer
     }
 
     // ditto.
-    void write(int num) nothrow @nogc
+    void write(int num, uint base = 10) nothrow @nogc
     {
         ubyte[int.sizeof * 8] buf = void;
-		auto start = itoa(num, buf.ptr, buf.length, 10);
+		auto start = itoa(num, buf.ptr, buf.length, base);
+		for (size_t i = start; i < buf.length; ++i)
+			write(buf[i]);
+    }
+
+    // ditto.
+    void write(ulong num, uint base) nothrow @nogc
+    {
+        ubyte[ulong.sizeof * 8] buf = void;
+		auto start = itoa(num, buf.ptr, buf.length, base);
 		for (size_t i = start; i < buf.length; ++i)
 			write(buf[i]);
     }
