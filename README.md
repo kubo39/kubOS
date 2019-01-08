@@ -20,7 +20,7 @@ Currently x86_64 only.
 Get system requirements.
 
 ```console
-$ apt install -y qemu-system-x86 nasm xorrison
+$ apt install -y qemu-system-x86 nasm xorriso
 ```
 
 Install DMD.
