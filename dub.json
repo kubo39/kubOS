@@ -1,7 +1,7 @@
 {
     "name": "kubos",
     "authors": [
-        "kubo39"
+        "Hiroki Noda"
     ],
     "targetType": "staticLibrary",
     "targetPath": "target/x86_64-unknown-linux-gnu/debug/",
@@ -11,5 +11,5 @@
         "optimize",
         "warnings",
         "deprecationWarnings"
-    ],
+    ]
 }
