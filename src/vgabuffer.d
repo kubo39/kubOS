@@ -1,11 +1,13 @@
 module vgabuffer;
 
+extern (C):
+@nogc:
+nothrow:
+
+pragma(LDC_no_typeinfo);
+pragma(LDC_no_moduleinfo);
+
 import util;
-
-import std.conv : to;
-
-
-@system:
 
 immutable BUFFER_HEIGHT = 25;
 immutable BUFFER_WIDTH  = 80;
@@ -57,7 +59,7 @@ struct Writer
     // Writes its argument to the VGA buffer.
     void write(ubyte b) nothrow @nogc
     {
-        if (b == '\n'.to!ubyte)
+        if (b == cast(ubyte) '\n')
         {
             newline;
             return;
@@ -118,7 +120,7 @@ struct Writer
 
     void clearRow(int row) nothrow @nogc
     {
-        auto blank = ScreenChar(' '.to!ubyte, colorCode);
+        auto blank = ScreenChar(cast(ubyte) ' ', colorCode);
         ScreenChar[BUFFER_WIDTH] arr;
         for (int i; i < BUFFER_WIDTH; ++i)
             arr[i] = blank;

@@ -1,15 +1,14 @@
 import vgabuffer;
 import multiboot;
 
-version(DigitalMars)
-{
-    __gshared void _d_dso_registry() {}
-    __gshared void* __dmd_personality_v0;
-}
+extern (C):
+@nogc:
+nothrow:
 
-@system:
+pragma(LDC_no_typeinfo);
+pragma(LDC_no_moduleinfo);
 
-extern(C):
+__gshared void _d_dso_registry() {}
 
 void d_main(size_t address) @nogc nothrow
 {

@@ -1,7 +1,11 @@
 module multiboot;
 
-import std.conv : to;
+extern (C):
+@nogc:
+nothrow:
 
+pragma(LDC_no_typeinfo);
+pragma(LDC_no_moduleinfo);
 
 struct Tag
 {
