@@ -19,7 +19,8 @@ DFLAGS = \
 	-mattr=-mmx,-sse,+soft-float \
 	-mtriple=$(TARGET) \
 	-nogc \
-	-release
+	-release \
+	-relocation-model=static
 
 LINKFLAGS = \
 	-I./src \
@@ -32,6 +33,7 @@ all: $(KERNEL)
 
 clean:
 	@rm -rf build
+	@rm -rf target
 
 run: $(ISO)
 	@qemu-system-x86_64 -drive format=raw,file=$(ISO)

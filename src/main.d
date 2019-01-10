@@ -10,7 +10,7 @@ pragma(LDC_no_moduleinfo);
 
 __gshared void _d_dso_registry() {}
 
-extern(C) void d_main(size_t address) @nogc nothrow
+void d_main(size_t address) @nogc nothrow
 {
     clearScreen;
     WRITER.writeln("Hello, World!");
