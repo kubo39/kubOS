@@ -1,8 +1,5 @@
 module multiboot;
 
-import std.conv : to;
-
-
 struct Tag
 {
     uint type;

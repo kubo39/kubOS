@@ -7,8 +7,6 @@ version(DigitalMars)
     __gshared void* __dmd_personality_v0;
 }
 
-@system:
-
 extern(C):
 
 void d_main(size_t address) @nogc nothrow
