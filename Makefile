@@ -1,55 +1,55 @@
-# Copyright 2015 Philipp Oppermann
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+ARCH ?= x86_64
+TARGET ?= $(ARCH)-unknown-linux-gnu
+KERNEL := build/kernel-$(ARCH).bin
+ISO := build/os-$(ARCH).iso
 
-arch ?= x86_64
-target ?= $(arch)-unknown-linux-gnu
-kernel := build/kernel-$(arch).bin
-iso := build/os-$(arch).iso
+DLANG_OS := target/$(TARGET)/debug/libkubos.a
+LINKER_SCRIPT := src/arch/$(ARCH)/linker.ld
+GRUB_CFG := src/arch/$(ARCH)/grub.cfg
+ASSEMBLY_SRCS := $(wildcard src/arch/$(ARCH)/*.asm)
+ASSEMBLY_OBJS := $(patsubst src/arch/$(ARCH)/%.asm, \
+	build/arch/$(ARCH)/%.o, $(ASSEMBLY_SRCS))
+D_SRCS := $(wildcard src/*.d)
 
-dlang_os := target/$(target)/debug/libkubos.a
-linker_script := src/arch/$(arch)/linker.ld
-grub_cfg := src/arch/$(arch)/grub.cfg
-assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
-assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
-	build/arch/$(arch)/%.o, $(assembly_source_files))
+LDC ?= ldc2
+
+DFLAGS = \
+	-disable-red-zone \
+	-lib \
+	-mattr=-mmx,-sse,+soft-float \
+	-mtriple=$(TARGET) \
+	-nogc \
+	-release
+
+LINKFLAGS = \
+	-I./src \
+    -Xcc=-nostartfiles \
+    -defaultlib= # Do not link libphobos2.a
 
 .PHONY: all clean run iso
 
-all: $(kernel)
+all: $(KERNEL)
 
 clean:
 	@rm -rf build
 
-run: $(iso)
-	@qemu-system-x86_64 -drive format=raw,file=$(iso)
+run: $(ISO)
+	@qemu-system-x86_64 -drive format=raw,file=$(ISO)
 
-iso: $(iso)
+ISO: $(ISO)
 
-$(iso): $(kernel) $(grub_cfg)
+$(ISO): $(KERNEL) $(GRUB_CFG)
 	@mkdir -p build/isofiles/boot/grub
-	@cp $(kernel) build/isofiles/boot/kernel.bin
-	@cp $(grub_cfg) build/isofiles/boot/grub
-	@grub-mkrescue -o $(iso) build/isofiles 2> /dev/null
+	@cp $(KERNEL) build/isofiles/boot/kernel.bin
+	@cp $(GRUB_CFG) build/isofiles/boot/grub
+	@grub-mkrescue -o $(ISO) build/isofiles 2> /dev/null
 	@rm -r build/isofiles
 
-$(kernel): dub $(assembly_object_files) $(linker_script)
-	@ld -n --gc-sections -T $(linker_script) -o $(kernel) $(assembly_object_files) $(dlang_os)
-
-dub:
-	@dub build --build=release
+$(KERNEL): $(ASSEMBLY_OBJS) $(LINKER_SCRIPT)
+	@$(LDC) -of=$(DLANG_OS) $(DFLAGS) $(LINKFLAGS) $(D_SRCS)
+	@ld -n --gc-sections -T $(LINKER_SCRIPT) -o $(KERNEL) $(ASSEMBLY_OBJS) $(DLANG_OS)
 
 # compile assembly files
-build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
+build/arch/$(ARCH)/%.o: src/arch/$(ARCH)/%.asm
 	@mkdir -p $(shell dirname $@)
 	@nasm -felf64 $< -o $@

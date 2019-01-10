@@ -1,5 +1,12 @@
 module multiboot;
 
+extern (C):
+@nogc:
+nothrow:
+
+pragma(LDC_no_typeinfo);
+pragma(LDC_no_moduleinfo);
+
 struct Tag
 {
     uint type;

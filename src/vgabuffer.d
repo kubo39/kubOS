@@ -1,5 +1,12 @@
 module vgabuffer;
 
+extern (C):
+@nogc:
+nothrow:
+
+pragma(LDC_no_typeinfo);
+pragma(LDC_no_moduleinfo);
+
 import util;
 
 immutable BUFFER_HEIGHT = 25;

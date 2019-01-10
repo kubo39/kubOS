@@ -4,3 +4,4 @@ target/
 dub.selections.json
 posts/
 *~
+*.[oa]

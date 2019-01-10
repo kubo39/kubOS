@@ -1,15 +1,16 @@
 import vgabuffer;
 import multiboot;
 
-version(DigitalMars)
-{
-    __gshared void _d_dso_registry() {}
-    __gshared void* __dmd_personality_v0;
-}
+extern (C):
+@nogc:
+nothrow:
 
-extern(C):
+pragma(LDC_no_typeinfo);
+pragma(LDC_no_moduleinfo);
 
-void d_main(size_t address) @nogc nothrow
+__gshared void _d_dso_registry() {}
+
+extern(C) void d_main(size_t address) @nogc nothrow
 {
     clearScreen;
     WRITER.writeln("Hello, World!");
