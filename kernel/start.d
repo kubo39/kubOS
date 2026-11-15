@@ -37,7 +37,7 @@ extern (C) void start(ulong hartid, void* dtb) @nogc nothrow @system
     writeCsr!"mideleg"(0xffff);    
 
     // Sモードに切り替え
-    __asm("mret", "{x10},{x11}", hartid, dtb);
+    __asm("mret", "{a0},{a1}", hartid, dtb);
 }
 
 pragma(inline, true)
