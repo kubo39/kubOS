@@ -13,6 +13,7 @@ build/kernel.elf: kernel/*.d kernel/kernel.ld
 		-od=build \
 		-op kernel/*.d
 	ld.lld \
+		--discard-locals \
 		-T kernel/kernel.ld \
 		--orphan-handling=warn \
 		-o $@ \
